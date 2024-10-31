@@ -1,24 +1,9 @@
-// index.js
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const pool = require('./db');
-const { body, validationResult } = require('express-validator');
-const cors = require('cors');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-app.use(cors()); // Enable CORS
-
-// User registration endpoint
 app.post('/api/users', 
     [
         body('username').isLength({ min: 3 }),
         body('email').isEmail(),
         body('password').isLength({ min: 6 }),
-        // Add other validations as needed
+        // Other validations as needed
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -74,12 +59,8 @@ app.post('/api/users',
             const userId = result.rows[0].user_id;
             res.status(201).json({ message: 'User created successfully', userId });
         } catch (error) {
-            console.error('Error creating user:', error.message); // Log the error message
+            console.error('Error creating user:', error); // Log the full error
             res.status(500).json({ message: 'Server error', error: error.message });
         }
     }
 );
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
