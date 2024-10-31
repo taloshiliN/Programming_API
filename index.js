@@ -1,3 +1,18 @@
+// index.js
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const pool = require('./db');
+const { body, validationResult } = require('express-validator');
+const cors = require('cors');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+app.use(cors()); // Enable CORS
+
+// User registration endpoint
 app.post('/api/users', 
     [
         body('username').isLength({ min: 3 }),
@@ -64,3 +79,8 @@ app.post('/api/users',
         }
     }
 );
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
