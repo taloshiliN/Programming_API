@@ -52,9 +52,10 @@ app.post('/api/users', async (req, res) => {
         const userId = result.rows[0].user_id;
         res.status(201).json({ message: 'User created successfully', userId });
     } catch (error) {
-        console.error('Error creating user:', error);
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error creating user:', error.message); // Log the error message
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
+    
 });
 
 app.listen(PORT, () => {
